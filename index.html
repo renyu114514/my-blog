@@ -210,31 +210,44 @@
 <!-- 引入Supabase客户端库 -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- 引入Supabase客户端库 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-  // 使用公开的匿名Supabase项目配置（仅用于演示）
+  // 初始化Supabase（关键修正：通过 window 对象调用）
   const SUPABASE_URL = "https://pgqyscacxrlxvhujjiht.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncXlzY2FjeHJseHZodWpqaWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMDM0NzMsImV4cCI6MjA2MTY3OTQ3M30.xkcQ_481Xtk897aDSSsTv8NfNQrPtDs2gsesZUOMKOs";
+  const supabase = window.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // 注册逻辑
+  // 注册功能
   document.getElementById('supabaseRegisterBtn').addEventListener('click', async (e) => {
     e.preventDefault();
-    
     const email = prompt('请输入邮箱:');
     const password = prompt('请输入密码（至少6位）:');
     
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password
-    });
+    // 输入验证
+    if (!email || !password || password.length < 6) {
+      alert('邮箱或密码不符合要求！');
+      return;
+    }
 
+    const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) {
       alert(`注册失败: ${error.message}`);
     } else {
       alert('注册成功！请检查邮箱验证链接✨');
+      // 可选：保存用户信息到数据库
+      const { error: dbError } = await supabase
+        .from('profiles')
+        .insert([{ 
+          id: data.user.id, 
+          email: data.user.email,
+          created_at: new Date()
+        }]);
+      if (dbError) console.error('保存用户信息失败:', dbError);
     }
   });
+
   // 登录功能
   document.getElementById('supabaseLoginBtn').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -246,7 +259,8 @@
       alert(`登录失败: ${error.message}`);
     } else {
       alert(`欢迎回来，${data.user.email}！`);
-      // 跳转到用户主页或更新导航栏状态
+      // 更新导航栏状态
+      document.getElementById('userEmail').textContent = data.user.email;
     }
   });
 
@@ -254,12 +268,18 @@
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN') {
       console.log('用户已登录:', session.user);
-      // 示例：显示用户邮箱
       document.getElementById('userEmail').textContent = session.user.email;
     } else if (event === 'SIGNED_OUT') {
       console.log('用户已退出');
+      document.getElementById('userEmail').textContent = '';
     }
   });
+
+  // 可选：退出功能（需在HTML中添加退出按钮）
+  // document.getElementById('logoutBtn').addEventListener('click', async () => {
+  //   await supabase.auth.signOut();
+  //   alert('已退出登录');
+  // });
 </script>
 </body>
 </html>
