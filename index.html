@@ -162,45 +162,35 @@
 
     <div class="star-decor">🌠</div>
 
-    <!-- Supabase 客户端库 -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // Supabase 初始化配置（替换为你自己的配置）
-        const SUPABASE_URL = "https://your-project.supabase.co";
-        const SUPABASE_KEY = "your-anon-key";
-        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+<!-- 引入 Supabase 库 -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-        // 注册功能
-        document.getElementById('supabaseRegisterBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const email = prompt('请输入邮箱:');
-            const password = prompt('请输入密码（至少6位）:');
-            
-            if (!email || !password || password.length < 6) {
-                alert('邮箱或密码不符合要求！');
-                return;
-            }
+<script>
+  // 初始化配置（替换为你自己的 Supabase 项目信息）
+  const SUPABASE_URL = "https://your-project.supabase.co";
+  const SUPABASE_KEY = "your-anon-key";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            try {
-                const { data, error } = await supabase.auth.signUp({ email, password });
-                if (error) throw error;
-                alert('注册成功！请检查邮箱验证链接✨');
-                
-                // 保存用户信息到数据库（需先在Supabase创建profiles表）
-                const { error: dbError } = await supabase
-                    .from('profiles')
-                    .insert([{ 
-                        id: data.user.id, 
-                        email: data.user.email,
-                        created_at: new Date()
-                    }]);
-                if (dbError) console.error('保存用户信息失败:', dbError);
-            } catch (error) {
-                alert(`注册失败: ${error.message}`);
-            }
-        });
+  // 注册功能
+  document.getElementById('supabaseRegisterBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = prompt('请输入邮箱:');
+    const password = prompt('请输入密码（至少6位）:');
+    
+    if (!email || !password || password.length < 6) {
+      alert('邮箱或密码不符合要求！');
+      return;
+    }
 
-        // 登录功能
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+      alert('注册成功！请检查邮箱验证链接✨');
+    } catch (error) {
+      alert(`注册失败: ${error.message}`);
+    }
+  });
+       // 登录功能
         document.getElementById('supabaseLoginBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const email = prompt('请输入邮箱:');
