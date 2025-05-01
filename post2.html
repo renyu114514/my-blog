@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 保持与首页相同的头部信息 -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <title>网站成立详情 - 张俊杰的博客</title>
+    <!-- 复用首页的CSS样式 -->
+    <style>
+        /* 粘贴index.html中的全部样式代码 */
+ /* 统一样式 */
+        body {
+            font-family: "微软雅黑", sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        nav {
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        nav a {
+            margin-right: 20px;
+            color: #34495e;
+        }
+        .bilibili-link {
+            float: right;
+            color: #00A1D6 !important;
+            font-weight: bold;
+            margin-left: 30px;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        .bilibili-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* 文章列表 */
+        .article-list {
+            margin: 40px 0;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .post {
+            margin: 25px 0;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            transition: transform 0.2s;
+        }
+        .post:hover {
+            transform: translateX(10px);
+            background: #fff;
+        }
+        .post h3 {
+            margin: 0;
+            font-size: 1.3em;
+            color: #2c3e50;
+        }
+        .post h3 a {
+            cursor: pointer;
+            color: inherit;
+            text-decoration: none;
+        }
+        .post h3 a:hover {
+            color: #3498db;
+        }
+
+        /* 其他组件 */
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .download-btn:hover {
+            background: #2980b9;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 导航栏（与首页一致） -->
+    <nav>
+        <a href="index.html#home">首页</a> <!-- 修改为返回首页的链接 -->
+        <a href="index.html#about">关于我</a>
+        <a href="index.html#contact">联系</a>
+        <a href="https://space.bilibili.com/2119605586" 
+           class="bilibili-link" 
+           target="_blank"
+           title="访问我的B站主页">
+            B站主页
+        </a>
+    </nav>
+
+    <!-- 文章详情内容 -->
+    <article class="post-detail">
+        <h1>2025.3.5注册域名</h1>
+        <div class="meta">
+            <time datetime="2025-03-05">发布日期：2025年3月5日</time>
+        </div>
+        <div class="content">
+            <p>开心 😄</p>
+            <a href="index.html" class="download-btn">返回首页</a>
+        </div>
+    </article>
+
+    <footer>
+        <p>© 2025 张俊杰的博客 · Powered by HTML</p>
+    </footer>
+</body>
+</html>
