@@ -131,23 +131,71 @@
         <div>
             <!-- 用户登录状态显示 -->
             <span id="userEmail" style="color: var(--primary); margin-left: 1rem;"></span>
-            <!-- 注册按钮 -->
-            <a href="#register" 
-               class="download-btn" 
-               style="margin-left:15px;"
-               title="注册页面"
-               id="supabaseRegisterBtn"> 
-               🌟 立即注册
-            </a>
-            <!-- 登录按钮 -->
-            <a href="#login" 
-               class="download-btn" 
-               style="margin-left:15px;"
-               title="登录页面"
-               id="supabaseLoginBtn"> 
-               🔑 登录
-            </a>
-            <!-- 其他导航按钮 -->
+  <!-- 原有链接... -->
+  <div style="float: right;">
+    <a href="#login" onclick="showModal('login')">🔑 登录</a>
+    <a href="#register" onclick="showModal('register')">📝 注册</a>
+  </div>
+</nav>
+<!-- 模态框 -->
+<div id="authModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="loginForm">
+      <h3>用户登录</h3>
+      <input type="text" id="loginUsername" placeholder="用户名">
+      <input type="password" id="loginPassword" placeholder="密码">
+      <button onclick="login()">登录</button>
+    </div>
+    <div id="registerForm" style="display:none;">
+      <h3>用户注册</h3>
+      <input type="text" id="regUsername" placeholder="用户名">
+      <input type="password" id="regPassword" placeholder="密码">
+      <button onclick="register()">注册</button>
+    </div>
+    <div id="authMessage"></div>
+  </div>
+</div>
+<style>
+/* 模态框样式 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.modal-content input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal-content button {
+  background: var(--gradient);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+</style>            <!-- 其他导航按钮 -->
             <a href="index2.html" class="download-btn">🚀 博客文章</a>
             <a href="download.html" class="download-btn">🚀 DeepSeek</a>
         </div>
@@ -165,7 +213,7 @@
     <script>
         // ==================== Supabase 初始化 ====================
         const SUPABASE_URL = "https://pgqyscacxrlxvhujjiht.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncXlzY2FjeHJseHZodWpqaWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMDM0NzMsImV4cCI6MjA2MTY3OTQ3M30.xkcQ_481Xtk897aDSSsTv8NfNQrPtDs2gsesZUOMKOs";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncXlzY2FjeHJseHZodWpqaWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMDM0NzMsImV4cCI6MjA2MTY3OTQ3M30.xkcQ_481Xtk897aDSSsTv8NfNQrPtDs2gsesZUOMKOs";
         const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ==================== 注册功能 ====================
