@@ -87,8 +87,6 @@
             border-radius: 4px;
         }
 
-        /* 其他样式保持不变... */
-
         .star-decor {
             position: fixed;
             right: 50px;
@@ -131,7 +129,7 @@
 <body>
     <nav>
         <div>
-            <!-- 用户状态显示 -->
+            <!-- 用户登录状态显示 -->
             <span id="userEmail" style="color: var(--primary); margin-left: 1rem;"></span>
             <!-- 注册按钮 -->
             <a href="#register" 
@@ -149,7 +147,7 @@
                id="supabaseLoginBtn"> 
                🔑 登录
             </a>
-            <!-- 其他按钮 -->
+            <!-- 其他导航按钮 -->
             <a href="index2.html" class="download-btn">🚀 博客文章</a>
             <a href="download.html" class="download-btn">🚀 DeepSeek</a>
         </div>
@@ -162,51 +160,72 @@
 
     <div class="star-decor">🌠</div>
 
-<!-- 引入 Supabase 库 -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-<script>
-  // 初始化配置（替换为你自己的 Supabase 项目信息）
-  const SUPABASE_URL = "https://pgqyscacxrlxvhujjiht.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncXlzY2FjeHJseHZodWpqaWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMDM0NzMsImV4cCI6MjA2MTY3OTQ3M30.xkcQ_481Xtk897aDSSsTv8NfNQrPtDs2gsesZUOMKOs";
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+import { createClient } from '@supabase/supabase-js'
 
-  // 注册功能
-  document.getElementById('supabaseRegisterBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    const email = prompt('请输入邮箱:');
-    const password = prompt('请输入密码（至少6位）:');
-    
-    if (!email || !password || password.length < 6) {
-      alert('邮箱或密码不符合要求！');
-      return;
-    }
+const supabaseUrl = 'https://pgqyscacxrlxvhujjiht.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+        // ==================== 注册功能 ====================
+        document.getElementById('supabaseRegisterBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = prompt('请输入邮箱:');
+            const password = prompt('请输入密码（至少6位）:');
 
-    try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-      alert('注册成功！请检查邮箱验证链接✨');
-    } catch (error) {
-      alert(`注册失败: ${error.message}`);
-    }
-  });
-       // 登录功能
+            // 输入验证
+            if (!email || !password || password.length < 6) {
+                alert('邮箱或密码不符合要求！');
+                return;
+            }
+
+            try {
+                // 调用 Supabase 注册接口
+                const { data, error } = await supabase.auth.signUp({ 
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+                alert('注册成功！请检查邮箱验证链接✨');
+
+                // 可选：保存用户信息到数据库
+                const { error: dbError } = await supabase
+                    .from('profiles')
+                    .insert([{ 
+                        id: data.user.id, 
+                        email: data.user.email,
+                        created_at: new Date()
+                    }]);
+                if (dbError) console.error('保存用户信息失败:', dbError);
+
+            } catch (error) {
+                alert(`注册失败: ${error.message}`);
+            }
+        });
+
+        // ==================== 登录功能 ====================
         document.getElementById('supabaseLoginBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const email = prompt('请输入邮箱:');
             const password = prompt('请输入密码:');
-            
+
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                // 调用 Supabase 登录接口
+                const { data, error } = await supabase.auth.signInWithPassword({ 
+                    email: email,
+                    password: password
+                });
+
                 if (error) throw error;
                 alert(`欢迎回来，${data.user.email}！`);
                 document.getElementById('userEmail').textContent = data.user.email;
+
             } catch (error) {
                 alert(`登录失败: ${error.message}`);
             }
         });
 
-        // 实时监听用户状态
+        // ==================== 实时监听用户状态 ====================
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN') {
                 console.log('用户已登录:', session.user);
