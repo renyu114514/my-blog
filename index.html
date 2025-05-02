@@ -127,7 +127,13 @@
     </style>
 </head>
 <body><!-- 使用官方推荐的 CDN 链接 -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 引入 Supabase 客户端库 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ==================== Supabase 初始化 ====================
+        const SUPABASE_URL = "https://pgqyscacxrlxvhujjiht.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncXlzY2FjeHJseHZodWpqaWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMDM0NzMsImV4cCI6MjA2MTY3OTQ3M30.xkcQ_481Xtk897aDSSsTv8NfNQrPtDs2gsesZUOMKOs";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
     <nav>
         <div>
             <!-- 用户登录状态显示 -->
@@ -150,13 +156,6 @@
 
     <div class="star-decor">🌠</div>
 
-    <!-- 引入 Supabase 客户端库 -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // ==================== Supabase 初始化 ====================
-        const SUPABASE_URL = "https://pgqyscacxrlxvhujjiht.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncXlzY2FjeHJseHZodWpqaWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMDM0NzMsImV4cCI6MjA2MTY3OTQ3M30.xkcQ_481Xtk897aDSSsTv8NfNQrPtDs2gsesZUOMKOs";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
         // ==================== 注册功能 ====================
         document.getElementById('supabaseRegisterBtn').addEventListener('click', async (e) => {
             e.preventDefault();
